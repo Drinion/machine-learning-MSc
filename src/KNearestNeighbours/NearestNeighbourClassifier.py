@@ -32,6 +32,26 @@ class NearestNeighbourClassifier:
         :return: the action that maximises the expected utility max_a E[U|a,x].
                  where E[U|a,x] = sum_y P(y|x) U(a,y).
         """
+
+        """
+        Comments by me:
+        - I think P(y|x) is the get_probabilities function.
+        - It's not really clear to me what an 'action' is.
+        - So by maximising 'a' we mean, find an 'a' for 'U' such that given a 'y', the 'y' corresponds to a maximal value (depending on 'a')?
+        First guess:
+        """
+        #  weighted_values = []
+        #  utilities = []
+        #
+        #  for i in range(len(U)):
+        #      for j in range(len(U[i])):
+        #          weighted_values.append(self.get_probabilities(U[i,j])*U[i,j])
+        #
+        #      utilities.append(np.sum(weighted_values[i]))
+        #
+        #  maximal_utility = np.max(utilities)
+        #  action = utilities.index(maximal_utility)
+
         n_actions = U.shape[0]
         n_labels = U.shape[1]
         assert (n_labels == self.n_classes)
