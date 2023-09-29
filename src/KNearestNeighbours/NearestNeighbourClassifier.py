@@ -37,25 +37,34 @@ class NearestNeighbourClassifier:
         Comments by me:
         - I think P(y|x) is the get_probabilities function.
         - It's not really clear to me what an 'action' is.
+        - 'y' is the set of labels.
         - So by maximising 'a' we mean, find an 'a' for 'U' such that given a 'y', the 'y' corresponds to a maximal value (depending on 'a')?
         First guess:
         """
-        #  weighted_values = []
-        #  utilities = []
-        #
-        #  for i in range(len(U)):
-        #      for j in range(len(U[i])):
-        #          weighted_values.append(self.get_probabilities(U[i,j])*U[i,j])
-        #
-        #      utilities.append(np.sum(weighted_values[i]))
-        #
-        #  maximal_utility = np.max(utilities)
-        #  action = utilities.index(maximal_utility)
+        weighted_values = []
+        utilities = []
+        labels = self.labels
+        probabilities = self.get_probabilities(x)
+        print("Length of U", len(U))
+        print("length of labels", len(self.labels))
+        print('x', x)
+        print('probabilities', probabilities)
+
+        for i in range(len(U)):
+            for j in labels:
+                weighted_values.append(probabilities[j-1]*U[i,j-1])
+
+            utilities.append(np.sum(weighted_values[i]))
+
+        maximal_utility = np.max(utilities)
+        action = utilities.index(maximal_utility)
 
         n_actions = U.shape[0]
         n_labels = U.shape[1]
         assert (n_labels == self.n_classes)
-        # HINT:
+
+        return U[action]
+    # HINT:
         # Need to use the get_probabilities function to return the action with the highest
         # expected utility
         # i.e. maximising sum_y P(y|x) U(a,y)
@@ -65,7 +74,7 @@ class NearestNeighbourClassifier:
         proportions = self.get_probabilities(x)
         return np.argmax(proportions)  # is that a good idea?
 
-    ## return a vector of 
+    ## return a vector of
     def get_probabilities(self, x):
         # calculate distances
         distances = np.zeros(self.n_points)
@@ -102,13 +111,14 @@ print(y)
 y[np.isnan(y)] = 0
 y += 1
 y = y.astype(int)
-print(y)
+print("y",y)
 
 kNN = NearestNeighbourClassifier(x, y, euclidean_metric, 3)
 for t in range(x.shape[0]):
     x_t = x[t]
+    print('x_t',x_t)
     p = kNN.get_probabilities(x_t)
-    print(y[t], p)
+    print("y[t]", y[t], p)
 
     print(p[y[t] - 1])
 
