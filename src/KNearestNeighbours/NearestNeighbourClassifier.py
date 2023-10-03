@@ -32,26 +32,26 @@ class NearestNeighbourClassifier:
         :return: the action that maximises the expected utility max_a E[U|a,x].
                  where E[U|a,x] = sum_y P(y|x) U(a,y).
         """
-        weighted_values = []
-        utilities = []
+        weighted_utilities = []
+        summed_utilities = []
         labels = self.labels
         probabilities = self.get_probabilities(x)
 
         for i in range(len(U)):
             for j in labels:
-                weighted_values.append(probabilities[j-1]*U[i,j-1])
+                weighted_utilities.append(probabilities[j-1]*U[i,j-1])
 
-            utilities.append(np.sum(weighted_values[i]))
+            summed_utilities.append(np.sum(weighted_utilities[i]))
 
-        maximal_utility = np.max(utilities)
-        action = utilities.index(maximal_utility)
+        maximal_sum = np.max(summed_utilities)
+        action = summed_utilities.index(maximal_sum)
 
         n_actions = U.shape[0]
         n_labels = U.shape[1]
         assert (n_labels == self.n_classes)
 
-        return U[action]
-        # HINT:
+        return action
+    # HINT:
         # Need to use the get_probabilities function to return the action with the highest
         # expected utility
         # i.e. maximising sum_y P(y|x) U(a,y)
